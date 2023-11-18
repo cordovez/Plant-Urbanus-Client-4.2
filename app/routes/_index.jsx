@@ -1,36 +1,48 @@
+// import { useState } from "react";
+import { useLoaderData } from "@remix-run/react";
+import LogoutButton from "../components/logout";
+import { userToken } from "../cookies.server";
+const BASE = process.env.BASE_URL;
+
 export const meta = () => {
-  return [{ title: "New Remix App" }];
+  return [{ title: "PlantUrbanus: User" }];
 };
 
+export async function loader({ request }) {
+  // const session = await getSession(request.headers.get("Cookie"));
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = await userToken.parse(cookieHeader);
+  const token = cookie.token;
+
+  if (token) {
+    const response = fetch(`${BASE}/api/users/me/plants`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = (await response).json();
+    console.log(await data);
+    return data;
+  }
+}
+
 export default function Index() {
+  const data = useLoaderData();
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Remix</h1>
+    <div>
+      <h1>PlantUrbanus</h1>
+
       <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
+        {data.map((plant) => {
+          return (
+            <li key={plant.common_name}>
+              {plant.common_name} <span>{plant.images.length}</span>
+              <img src={plant.images[0].url} alt="plant"></img>
+            </li>
+          );
+        })}
       </ul>
+      <LogoutButton />
     </div>
   );
 }

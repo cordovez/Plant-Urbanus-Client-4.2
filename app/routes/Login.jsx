@@ -1,28 +1,21 @@
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { useState } from "react";
-import { commitSession, getSession } from "../sessions";
+import { userToken } from "../cookies.server";
 
 const BASE = process.env.BASE_URL;
 
-export async function loader({ request }) {
-  const session = await getSession(request.headers.get("Cookie"));
+// export async function loader({ request }) {
+//   const cookieHeader = request.headers.get("Cookie");
 
-  if (session.has("token")) {
-    // Redirect to the home page if they are already signed in.
-    return redirect("/");
-  }
-
-  const data = { error: session.get("error") };
-
-  return json(data, {
-    headers: {
-      "Set-Cookie": await commitSession(session),
-    },
-  });
-}
-
+//   if (!cookieHeader) {
+//     return { message: "no cookie" };
+//   }
+//   return json({ token: cookieHeader });
+// }
 export async function action({ request }) {
-  const session = await getSession(request.headers.get("Cookie"));
+  // const cookieHeader = request.headers.get("Cookie");
+  // const cookie = (await userToken.parse(cookieHeader)) || {};
+
   const form = await request.formData();
   const username = form.get("username");
   const password = form.get("password");
@@ -37,31 +30,33 @@ export async function action({ request }) {
       password,
     }),
   });
+
   const accessInfo = await response.json();
+  console.log({ "action response": accessInfo.access_token });
 
   if (accessInfo.detail === "Incorrect username or password") {
-    session.flash("error", "Invalid username/password");
-
-    return redirect("/login", {
-      headers: {
-        "Set-Cookie": await commitSession(session),
-      },
-    });
+    return redirect("/login");
   }
-  session.set("token", accessInfo.access_token);
+
+  const tokenCookie = await userToken.serialize({
+    token: accessInfo.access_token,
+  });
+
   return redirect("/", {
-    headers: { "Set-Cookie": await commitSession(session) },
+    headers: {
+      "Set-Cookie": await userToken.serialize({
+        token: accessInfo.access_token,
+      }),
+    },
   });
 }
 
 export default function Login() {
   const [formData, setFormData] = useState({ username: "", password: "" });
-
+  // const data = useLoaderData();
   const handleInputChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
-  //   const response = useActionData();
-  //   console.log(response);
   return (
     <div className="h-full justify-center bg-yellow-100 items-center flex flex-col gap-y-5">
       <form method="POST" className="rounded-2xl bg-white p-6 w-96">
@@ -92,6 +87,7 @@ export default function Login() {
         >
           login
         </button>
+        {/* <p>{JSON.stringify(data.message)}</p> */}
       </form>
     </div>
   );
