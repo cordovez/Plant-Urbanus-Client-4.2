@@ -1,25 +1,19 @@
 import { redirect } from "@remix-run/node";
 import { useState } from "react";
-import { userToken } from "../cookies.server";
+import { commitSession, getSession } from "../sessions";
 
 const BASE = process.env.BASE_URL;
 
-// export async function loader({ request }) {
-//   const cookieHeader = request.headers.get("Cookie");
-
-//   if (!cookieHeader) {
-//     return { message: "no cookie" };
-//   }
-//   return json({ token: cookieHeader });
-// }
+// the form is intercepted by the action below and parses the data to set a session with the "token" received from the api.
 export async function action({ request }) {
-  // const cookieHeader = request.headers.get("Cookie");
-  // const cookie = (await userToken.parse(cookieHeader)) || {};
+  const session = await getSession(request.headers.get("Cookie"));
 
+  // read the values sent in the form
   const form = await request.formData();
   const username = form.get("username");
   const password = form.get("password");
 
+  // sign in at API
   const response = await fetch(`${BASE}/token`, {
     method: "POST",
     headers: {
@@ -32,21 +26,23 @@ export async function action({ request }) {
   });
 
   const accessInfo = await response.json();
-  console.log({ "action response": accessInfo.access_token });
 
   if (accessInfo.detail === "Incorrect username or password") {
-    return redirect("/login");
+    session.flash("error", "Invalid username/password");
+
+    // Redirect back to the login page with errors and nullify the session by "committing" a blank session.
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    });
   }
 
-  const tokenCookie = await userToken.serialize({
-    token: accessInfo.access_token,
-  });
-
+  // otherwise redefine the session with the token and redirect
+  session.set("token", accessInfo.access_token);
   return redirect("/", {
     headers: {
-      "Set-Cookie": await userToken.serialize({
-        token: accessInfo.access_token,
-      }),
+      "Set-Cookie": await commitSession(session),
     },
   });
 }
@@ -83,7 +79,7 @@ export default function Login() {
           type="submit"
           name="_action"
           value="Sign In"
-          className="w-full rounded-xl mt-2 bg-red-500 px-3 py-2 text-white font-semibold transition duration-300 ease-in-out hover:bg-red-600"
+          className="w-full rounded-xl mt-2 bg-red-500 px-3 py-2 text-white font-semibold transition duration-300 ease-in-out hover:bg-blue-600"
         >
           login
         </button>

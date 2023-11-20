@@ -1,7 +1,7 @@
-// import { useState } from "react";
-import { useLoaderData } from "@remix-run/react";
-import LogoutButton from "../components/logout";
-import { userToken } from "../cookies.server";
+import { redirect } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import { getSession } from "../sessions";
+
 const BASE = process.env.BASE_URL;
 
 export const meta = () => {
@@ -9,21 +9,22 @@ export const meta = () => {
 };
 
 export async function loader({ request }) {
-  // const session = await getSession(request.headers.get("Cookie"));
-  const cookieHeader = request.headers.get("Cookie");
-  const cookie = await userToken.parse(cookieHeader);
-  const token = cookie.token;
+  const cookieHeader = await getSession(request.headers.get("Cookie"));
 
-  if (token) {
-    const response = fetch(`${BASE}/api/users/me/plants`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = (await response).json();
-    console.log(await data);
-    return data;
+  // const cookieHeader = request.headers.get("Cookie");
+  const token = cookieHeader.data.token;
+
+  if (!token) {
+    return redirect("/login");
   }
+
+  const response = fetch(`${BASE}/api/users/me/plants`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = (await response).json();
+  return data;
 }
 
 export default function Index() {
@@ -31,6 +32,13 @@ export default function Index() {
   return (
     <div>
       <h1>PlantUrbanus</h1>
+      <div>
+        <ul>
+          <li>User profile</li>
+          <li>Plant List</li>
+        </ul>
+        <Link to="/logout">logout</Link>
+      </div>
 
       <ul>
         {data.map((plant) => {
@@ -42,7 +50,6 @@ export default function Index() {
           );
         })}
       </ul>
-      <LogoutButton />
     </div>
   );
 }
