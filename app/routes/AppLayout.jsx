@@ -8,7 +8,8 @@ import {
   useRouteError,
 } from "@remix-run/react";
 
-import styles from "./tailwind.css";
+import Sidebar from "../components/Sidebar";
+import styles from "../tailwind.css";
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
 export default function App() {
@@ -21,7 +22,7 @@ export default function App() {
         <Links />
       </head>
       <body className="flex h-screen">
-        {/* <Sidebar /> */}
+        <Sidebar />
         <Outlet />
         <ScrollRestoration />
         <Scripts />
