@@ -5,13 +5,33 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-
+import Sidebar from "./components/Sidebar";
 import styles from "./tailwind.css";
+
+import { getSession } from "./sessions";
+
+export const meta = () => {
+  return [{ title: "PlantUrbanus" }];
+};
+
+export async function loader({ request }) {
+  const cookieHeader = await getSession(request.headers.get("Cookie"));
+  const token = cookieHeader.data.token;
+
+  if (!token) {
+    return null;
+  }
+  // return redirect("/Plants");
+  return token;
+}
+
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
 export default function App() {
+  const token = useLoaderData();
   return (
     <html lang="en">
       <head>
@@ -21,8 +41,16 @@ export default function App() {
         <Links />
       </head>
       <body className="flex h-screen">
-        {/* <Sidebar /> */}
-        <Outlet />
+        {token ? (
+          <>
+            <Sidebar /> <Outlet />
+          </>
+        ) : (
+          <>
+            <Outlet />
+          </>
+        )}
+
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

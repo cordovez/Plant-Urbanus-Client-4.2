@@ -1,8 +1,6 @@
 import { redirect } from "@remix-run/node";
 import { getSession } from "../sessions";
 
-const BASE = process.env.BASE_URL;
-
 export const meta = () => {
   return [{ title: "PlantUrbanus: User" }];
 };
@@ -16,7 +14,7 @@ export async function loader({ request }) {
   if (!token) {
     return redirect("/Login");
   }
-  return redirect("/AppLayout");
+  return redirect("/plants/photos");
 }
 
 export default function Index() {
