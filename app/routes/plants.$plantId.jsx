@@ -1,16 +1,15 @@
 import { redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import PlantDetailGrid from "../components/PlantsDetailGrid";
 import { getSession } from "../sessions";
 
-const BASE = process.env.BASE_URL;
-
 export const loader = async ({ params, request }) => {
+  const BASE = process.env.BASE_URL;
   invariant(params.plantId, "Missing plantId param");
   const plantId = params.plantId;
   const cookieHeader = await getSession(request.headers.get("Cookie"));
 
-  // const cookieHeader = request.headers.get("Cookie");
   const token = cookieHeader.data.token;
 
   if (!token) {
@@ -29,19 +28,21 @@ export const loader = async ({ params, request }) => {
 export default function Plant() {
   const data = useLoaderData();
   const plantPhotos = data.images;
-  console.log(data);
+
   return (
     <main>
       <div>
-        {plantPhotos.map((photo) => {
+        <PlantDetailGrid data={plantPhotos} />
+        {/* {plantPhotos.map((photo) => {
           return (
             <div key={photo.public_id}>
               <img src={photo.url} alt="" />
               <small>{photo.photo_date}</small>
             </div>
           );
-        })}
+        })} */}
       </div>
+
       <div>
         <p>common name: {data.common_name ? data.common_name : ""}</p>
         <p>

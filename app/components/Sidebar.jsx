@@ -1,25 +1,56 @@
-import { Link } from "@remix-run/react";
-
+import { NavLink } from "@remix-run/react";
 export default function Sidebar() {
   return (
-    <div className="flex flex-col bg-slate-800  w-16  h-screen justify-start sm:w-60 ">
-      <div className="mt-20">
-        <ul className="text-slate-300 space-y-4 w-full flex flex-col items-center ">
-          <li className="flex flex-row ">
-            {userIcon} <p className="hidden sm:visible sm:ml-4"> Profile </p>
+    <div className="flex flex-col w-16  h-screen justify-start sm:w-60 ">
+      <div className="flex items-center justify-center h-full bg-slate-700">
+        <ul className="text-slate-500 space-y-10">
+          <li className={listItemStyles}>
+            <NavItem
+              icon={userIcon}
+              label="Profile"
+              activeLink={activeLink}
+              destination="user"
+            />
           </li>
-          <li className="flex flex-row ">
-            {photoIcon} <p className="hidden sm:visible sm:ml-4"> Plants</p>
+          <li className={listItemStyles}>
+            <NavItem
+              icon={photoIcon}
+              label="Plants"
+              activeLink={activeLink}
+              destination="./plants"
+            />
           </li>
-          <li className="flex flex-row ">
-            {logoutIcon}
-            <p className="hidden sm:visible sm:ml-4"> Logout </p>
+          <li className={listItemStyles}>
+            <NavItem
+              icon={logoutIcon}
+              label="Log out"
+              activeLink={activeLink}
+              destination="logout"
+            />
           </li>
         </ul>
       </div>
     </div>
   );
 }
+
+export function NavItem({ icon, label, activeLink, destination }) {
+  return (
+    <div className="flex  justify-center">
+      <NavLink
+        className={({ isActive, isPending }) =>
+          isActive ? activeLink : isPending ? "pending " : ""
+        }
+        to={destination}
+      >
+        <div>{icon}</div>
+        <p className="invisible sm:visible sm:ml-4"> {label} </p>
+      </NavLink>
+    </div>
+  );
+}
+const listItemStyles = "flex flex-row   hover:text-white  hover:bg-slate-800";
+const activeLink = "bg-slate-600";
 
 const userIcon = (
   <svg
@@ -28,7 +59,7 @@ const userIcon = (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="w-5 h-5"
+    className="w-6 h-6"
   >
     <path
       strokeLinecap="round"

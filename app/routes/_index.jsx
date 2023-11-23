@@ -14,9 +14,9 @@ export async function loader({ request }) {
   if (!token) {
     return redirect("/Login");
   }
-  return redirect("/plants/photos");
+  return redirect("/plants");
 }
 
 export default function Index() {
-  return "Index";
+  return <></>;
 }

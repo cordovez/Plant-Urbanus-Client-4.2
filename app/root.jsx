@@ -24,7 +24,6 @@ export async function loader({ request }) {
   if (!token) {
     return null;
   }
-  // return redirect("/Plants");
   return token;
 }
 
@@ -50,7 +49,6 @@ export default function App() {
             <Outlet />
           </>
         )}
-
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

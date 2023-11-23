@@ -40,7 +40,7 @@ export async function action({ request }) {
 
   // otherwise redefine the session with the token and redirect
   session.set("token", accessInfo.access_token);
-  return redirect("/Plants", {
+  return redirect("/plants", {
     headers: {
       "Set-Cookie": await commitSession(session),
     },

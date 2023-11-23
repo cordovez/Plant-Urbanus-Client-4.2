@@ -1,8 +1,7 @@
 import { redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import PlantGrid from "../components/PlantGrid";
+import PlantsOverviewGrid from "../components/PlantsOverviewGrid";
 import { getSession } from "../sessions";
-const BASE = process.env.BASE_URL;
 
 export async function loader({ request }) {
   const cookieHeader = await getSession(request.headers.get("Cookie"));
@@ -12,7 +11,7 @@ export async function loader({ request }) {
     return redirect("/");
   }
 
-  const response = fetch(`${BASE}/api/users/me/plants`, {
+  const response = fetch(`${process.env.BASE_URL}/api/users/me/plants`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -20,12 +19,12 @@ export async function loader({ request }) {
   const data = (await response).json();
   return data;
 }
-
 export default function PlantPhotos() {
-  const data = useLoaderData();
+  const plantData = useLoaderData();
+  // return <div>{JSON.stringify(plantData)}</div>;
   return (
-    <main className="flex mx-10">
-      <PlantGrid data={data} />
+    <main>
+      <PlantsOverviewGrid data={plantData} />
     </main>
   );
 }
