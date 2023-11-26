@@ -13,12 +13,12 @@ export const action = async ({ request }) => {
 
 export default function LogoutRoute() {
   return (
-    <main>
+    <main className="justify-center">
       <div className=" justify-center items-center flex flex-col gap-y-5 ">
         <h2 className="text-3xl font-extrabold text-black-600 mb-5">Log Out</h2>
         <p>Are you sure you want to log out?</p>
         <Form method="post">
-          <button>Logout</button>
+          <button className="hover:bg-yellow-500">Logout</button>
         </Form>
         <NavLink to="/">Never mind</NavLink>
       </div>

@@ -6,7 +6,6 @@ import { getSession } from "../sessions";
 export async function loader({ request }) {
   const cookieHeader = await getSession(request.headers.get("Cookie"));
   const token = cookieHeader.data.token;
-
   if (!token) {
     return redirect("/");
   }
@@ -21,7 +20,6 @@ export async function loader({ request }) {
 }
 export default function PlantPhotos() {
   const plantData = useLoaderData();
-  // return <div>{JSON.stringify(plantData)}</div>;
   return (
     <main>
       <PlantsOverviewGrid data={plantData} />

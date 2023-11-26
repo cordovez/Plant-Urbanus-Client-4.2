@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    background-color: ivory;
+  }
   button {
     border: solid 1px black;
     padding: 4px;
@@ -14,7 +17,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: start;
     align-items: center;
   }
 }
