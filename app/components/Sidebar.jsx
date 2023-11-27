@@ -1,56 +1,60 @@
 import { NavLink } from "@remix-run/react";
 export default function Sidebar() {
   return (
-    <div className="flex flex-col w-16  h-screen justify-start sm:w-60 ">
-      <div className="flex items-center justify-center h-full bg-slate-700">
-        <ul className="text-slate-500 space-y-10">
-          <li className={listItemStyles}>
-            <NavItem
-              icon={userIcon}
-              label="Profile"
-              activeLink={activeLink}
-              destination="user"
-            />
-          </li>
-          <li className={listItemStyles}>
-            <NavItem
-              icon={photoIcon}
-              label="Plants"
-              activeLink={activeLink}
-              destination="./plants"
-            />
-          </li>
-          <li className={listItemStyles}>
-            <NavItem
-              icon={logoutIcon}
-              label="Log out"
-              activeLink={activeLink}
-              destination="logout"
-            />
-          </li>
-        </ul>
-      </div>
+    <div className="flex flex-initial flex-col w-20  h-screen justify-start  bg-slate-800 sm:w-1/4 ">
+      <ul className="text-slate-500 space-y-2">
+        <li className={listItemStyles}>
+          <NavItem
+            icon={userIcon}
+            label="Profile"
+            activeLink={activeLink}
+            destination="user"
+          />
+        </li>
+        <li className={listItemStyles}>
+          <NavItem
+            icon={photoIcon}
+            label="Plants"
+            activeLink={activeLink}
+            destination="./plants"
+          />
+        </li>
+        <li className={listItemStyles}>
+          <NavItem
+            icon={logoutIcon}
+            label="Log out"
+            activeLink={activeLink}
+            destination="logout"
+          />
+        </li>
+      </ul>
     </div>
   );
 }
 
 export function NavItem({ icon, label, activeLink, destination }) {
   return (
-    <div className="flex  justify-center">
-      <NavLink
-        className={({ isActive, isPending }) =>
-          isActive ? activeLink : isPending ? "pending " : ""
-        }
-        to={destination}
+    // <div className="flex  justify-center item-center bg-red-500">
+    <NavLink
+      className={({ isActive, isPending }) =>
+        isActive ? activeLink : isPending ? "pending  bg-slate-700 p-2 " : ""
+      }
+      to={destination}
+    >
+      <div
+        className="flex justify-center items-center space-x-4
+ "
       >
-        <div>{icon}</div>
-        <p className="invisible sm:visible sm:ml-4"> {label} </p>
-      </NavLink>
-    </div>
+        <div>{icon}</div> <p className="hidden sm:block "> {label} </p>
+      </div>
+    </NavLink>
+    // </div>
   );
 }
-const listItemStyles = "flex flex-row   hover:text-white  hover:bg-slate-800";
-const activeLink = "bg-slate-600";
+// const listItemStyles = "";
+const listItemStyles =
+  "flex flex-col mt-10   p-4  hover:text-white  hover:bg-slate-800  ";
+const activeLink = "text-white";
 
 const userIcon = (
   <svg
@@ -59,7 +63,7 @@ const userIcon = (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="w-6 h-6"
+    className="w-12 h-12"
   >
     <path
       strokeLinecap="round"
@@ -76,7 +80,7 @@ const photoIcon = (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="w-6 h-6"
+    className="w-12 h-12"
   >
     <path
       strokeLinecap="round"
@@ -92,7 +96,7 @@ const logoutIcon = (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="w-6 h-6"
+    className="w-12 h-12"
   >
     <path
       strokeLinecap="round"

@@ -9,6 +9,7 @@ import { thumbnail } from "@cloudinary/url-gen/actions/resize";
 import { max } from "@cloudinary/url-gen/actions/roundCorners";
 import { face } from "@cloudinary/url-gen/qualifiers/focusOn";
 import { focusOn } from "@cloudinary/url-gen/qualifiers/gravity";
+import BasicButton from "../components/basicButton";
 import convertDatetime from "../utils/convertDatetime";
 
 export const action = async ({ params, request }) => {
@@ -50,24 +51,30 @@ export default function User() {
     .delivery(dpr("2.0"));
 
   return (
-    <main className="justify-center">
-      <h1>{userData.username}</h1>
-      <div className="mt-10 w-40">
+    <main className="">
+      <div className="mt-10 w-40 flex flex-wrap justify-center">
         <AdvancedImage cldImg={avatar} />
+        <h1 className="font-bold">{userData.username}</h1>
       </div>
-      <div className="flex flex-col items-start ml-10 mt-20">
-        <p>name: {userData.first_name}</p>
-        <p>last name: {userData.last_name}</p>
-        <p>member since: {memberDate}</p>
-        <p>number of plants: {userData.plants.length}</p>
+      <div className="flex flex-col items-start ml-10 my-10">
+        <p>
+          <span className="font-bold">name:</span> {userData.first_name}
+        </p>
+        <p>
+          <span className="font-bold">last name: </span>
+          {userData.last_name}
+        </p>
+        <p>
+          <span className="font-bold">member since:</span> {memberDate}
+        </p>
+        <p>
+          <span className="font-bold">number of plants:</span>{" "}
+          {userData.plants.length}
+        </p>
       </div>
       <Form method="post">
-        <button type="submit" className={buttonStyle}>
-          Edit
-        </button>
+        <BasicButton label="Edit" />
       </Form>
     </main>
   );
 }
-const buttonStyle =
-  "text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800";

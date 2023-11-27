@@ -6,11 +6,13 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useMatches,
   useRouteError,
 } from "@remix-run/react";
 import Sidebar from "./components/Sidebar";
 import styles from "./tailwind.css";
 
+import Hero from "./components/hero";
 import { getSession } from "./sessions";
 
 export const meta = () => {
@@ -30,6 +32,7 @@ export async function loader({ request }) {
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
 export default function App() {
+  const matches = useMatches();
   const token = useLoaderData();
   return (
     <html lang="en">
@@ -39,11 +42,17 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="flex h-screen">
+      <body>
         {token ? (
-          <>
-            <Sidebar /> <Outlet />
-          </>
+          <div className="flex flex-col ">
+            <header>
+              <Hero />
+            </header>
+            <div className="flex ">
+              <Sidebar />
+              <Outlet />
+            </div>
+          </div>
         ) : (
           <>
             <Outlet />

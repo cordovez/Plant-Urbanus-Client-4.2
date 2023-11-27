@@ -1,5 +1,5 @@
 import { redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import PlantsOverviewGrid from "../components/PlantsOverviewGrid";
 import { getSession } from "../sessions";
 
@@ -26,3 +26,6 @@ export default function PlantPhotos() {
     </main>
   );
 }
+export const handle = {
+  breadcrumb: () => <Link to="/">My Plants</Link>,
+};

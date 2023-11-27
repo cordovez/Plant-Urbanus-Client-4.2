@@ -1,7 +1,8 @@
 import { redirect } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import PlantDetailGrid from "../components/PlantsDetailGrid";
+import BasicButton from "../components/basicButton";
 import { getSession } from "../sessions";
 import convertDatetime from "../utils/convertDatetime";
 
@@ -37,30 +38,53 @@ export default function Plant() {
 
   return (
     <main className="">
-      <h1>{data.common_name ? data.common_name : ""}</h1>
+      <h1>Plant details</h1>
+      <h2>{data.common_name ? data.common_name : ""}</h2>
 
-      <div className="flex mx-auto  bg-green-200  ">
+      <div className="flex mx-auto  w-11/12 ">
         <PlantDetailGrid data={plantPhotos} />
       </div>
 
       <div>
-        <p>date of purchase: {dateOfPurchase ? dateOfPurchase : ""}</p>
         <p>
-          scientific name: {data.scientific_name ? data.scientific_name : ""}
+          <span className="font-bold">date of purchase:</span>{" "}
+          {dateOfPurchase ? dateOfPurchase : ""}
         </p>
-        <p>substrate: {data.substrate ? data.substrate : ""}</p>
-        <p>pest treatment: {data.pest_treatment ? data.pest_treatment : ""}</p>
-        <p>nutrients: {data.nutrients ? data.nutrients : ""}</p>
-        <p>notes: {data.notes ? data.notes : ""}</p>
-        <p>price: €{data.price_paid ? data.price_paid : ""}</p>
+        <p>
+          <span className="font-bold">scientific name:</span>{" "}
+          {data.scientific_name ? data.scientific_name : ""}
+        </p>
+        <p>
+          <span className="font-bold">substrate:</span>{" "}
+          {data.substrate ? data.substrate : ""}
+        </p>
+        <p>
+          <span className="font-bold">pest treatment:</span>{" "}
+          {data.pest_treatment ? data.pest_treatment : ""}
+        </p>
+        <p>
+          <span className="font-bold">nutrients:</span>{" "}
+          {data.nutrients ? data.nutrients : ""}
+        </p>
+        <p>
+          <span className="font-bold">notes:</span>{" "}
+          {data.notes ? data.notes : ""}
+        </p>
+        <p>
+          <span className="font-bold">price:</span> €
+          {data.price_paid ? data.price_paid : ""}
+        </p>
       </div>
       <Form method="post">
-        <button type="submit" className={buttonStyle}>
-          Edit
-        </button>
+        <BasicButton label="Edit" />
       </Form>
     </main>
   );
 }
-const buttonStyle =
-  "text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800";
+
+export const handle = {
+  // const data = useLoaderData()
+  breadcrumb: () => {
+    return <Link to={`/plant/detail`}>Child Route</Link>;
+  },
+};

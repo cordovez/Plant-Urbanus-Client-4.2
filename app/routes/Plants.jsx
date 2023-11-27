@@ -1,12 +1,11 @@
 import { Outlet } from "@remix-run/react";
+import Breadcrumbs from "../components/breadcrumbs";
 
 export default function Plants() {
   return (
-    <main>
-      <div className="flex flex-col items-center justify-start mt-10">
-        <h1>My Plants</h1>
-        <Outlet />
-      </div>
+    <main className="">
+      <Breadcrumbs />
+      <Outlet />
     </main>
   );
 }

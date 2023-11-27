@@ -9,12 +9,12 @@ export default function PlantGrid({ data }) {
   });
 
   return (
-    <ul className="  space-y-2 gap-2  flex-wrap">
+    <ul className="flex flex-wrap justify-start">
       {data.map((image) => {
         const supportImage = cld.image(image.public_id);
         supportImage.resize(fill().width(200).height(200));
         return (
-          <li key={supportImage.public_id}>
+          <li key={supportImage.public_id} className="mx-2 my-2 ">
             <AdvancedImage cldImg={supportImage} />
           </li>
         );

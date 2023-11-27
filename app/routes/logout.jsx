@@ -1,5 +1,6 @@
 import { redirect } from "@remix-run/node";
 import { Form, NavLink } from "@remix-run/react";
+import BasicButton from "../components/basicButton";
 import { destroySession, getSession } from "../sessions";
 
 export const action = async ({ request }) => {
@@ -13,12 +14,12 @@ export const action = async ({ request }) => {
 
 export default function LogoutRoute() {
   return (
-    <main className="justify-center">
-      <div className=" justify-center items-center flex flex-col gap-y-5 ">
+    <main>
+      <div className=" justify-center items-center flex flex-col gap-y-5 mt-20">
         <h2 className="text-3xl font-extrabold text-black-600 mb-5">Log Out</h2>
         <p>Are you sure you want to log out?</p>
         <Form method="post">
-          <button className="hover:bg-yellow-500">Logout</button>
+          <BasicButton label={"Log out"} />
         </Form>
         <NavLink to="/">Never mind</NavLink>
       </div>
