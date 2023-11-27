@@ -1,6 +1,7 @@
 import { redirect } from "@remix-run/node";
 import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import BasicButton from "../components/basicButton";
 import { getSession } from "../sessions";
 
 export const loader = async ({ params, request }) => {
@@ -47,10 +48,7 @@ export const action = async ({ params, request }) => {
     fetchConfig
   );
   const data = (await response).json;
-  console.log("******************************");
-  console.log(plantId);
-  console.log(updates);
-  console.log("*****************************");
+
   if (data) {
     return redirect(`/plants/${plantId}`);
   }
@@ -136,10 +134,9 @@ export default function UserEdit() {
           name="price_paid"
         />
         <p>
-          <button type="submit">Save</button>
-          <button onClick={() => navigate(-1)} type="button">
-            Cancel
-          </button>
+          <BasicButton label="Save" />
+
+          <BasicButton label="Cancel" onClick={() => navigate(-1)} />
         </p>
       </Form>
     </main>

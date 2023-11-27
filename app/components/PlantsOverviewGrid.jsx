@@ -35,6 +35,12 @@ export default function PlantGrid({ data }) {
           </NavLink>
         );
       })}
+      <li className="flex flex-col justify-center items-center my-6">
+        <p className="text-white">Add a plant</p>
+        <div className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5  text-center me-2  cursor-pointer w-40 h-40 flex justify-center items-center">
+          <h1>Add a Plant</h1>
+        </div>
+      </li>
     </ul>
   );
 }

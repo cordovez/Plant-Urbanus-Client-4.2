@@ -1,5 +1,9 @@
-export default function BasicButton({ label }) {
-  return <button className={button_style}>{label}</button>;
+export default function BasicButton({ label, onClick }) {
+  return (
+    <button className={button_style} onClick={onClick}>
+      {label}
+    </button>
+  );
 }
 
 const button_style =

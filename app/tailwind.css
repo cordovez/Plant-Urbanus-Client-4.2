@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  /* body {
-    background-image: url("../public/teemu-paananen-OOE4xAnBhKo-unsplash2.jpg");
-    object-fit: scale-down;
-  } */
   button {
     border: solid 1px black;
     padding: 4px;

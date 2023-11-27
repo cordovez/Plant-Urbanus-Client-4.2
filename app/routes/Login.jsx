@@ -50,8 +50,12 @@ export async function action({ request }) {
 export default function Login() {
   return (
     <div className="bg-slate-800 flex flex-col w-full sm:flex-row ">
-      <LoginBackground />
-      <LoginForm />
+      <div>
+        <LoginBackground />
+      </div>
+      <div className="">
+        <LoginForm />
+      </div>
     </div>
   );
 }
