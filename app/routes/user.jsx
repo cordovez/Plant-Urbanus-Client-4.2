@@ -1,6 +1,6 @@
 import { redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
-import { getSession } from "../sessions";
+import getToken from "../utils/getToken";
 
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
@@ -18,13 +18,8 @@ export const action = async ({ params, request }) => {
 
 export const loader = async ({ request }) => {
   const BASE = process.env.BASE_URL;
+  const token = await getToken({ request });
 
-  const cookieHeader = await getSession(request.headers.get("Cookie"));
-  const token = cookieHeader.data.token;
-
-  if (!token) {
-    return redirect("/");
-  }
   const response = fetch(`${BASE}/api/users/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -51,7 +46,7 @@ export default function User() {
     .delivery(dpr("2.0"));
 
   return (
-    <main className="">
+    <>
       <div className="mt-10 w-40 flex flex-wrap justify-center">
         <AdvancedImage cldImg={avatar} />
         <h1 className="font-bold">{userData.username}</h1>
@@ -75,6 +70,6 @@ export default function User() {
       <Form method="post">
         <BasicButton label="Edit" />
       </Form>
-    </main>
+    </>
   );
 }

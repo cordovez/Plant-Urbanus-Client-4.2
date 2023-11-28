@@ -1,8 +1,11 @@
 import { redirect } from "@remix-run/node";
 import { getSession } from "../sessions";
+import styles from "../tailwind.css";
+
+export const links = () => [{ rel: "stylesheet", href: styles }];
 
 export const meta = () => {
-  return [{ title: "PlantUrbanus: User" }];
+  return [{ title: "PlantUrbanus" }];
 };
 
 export async function loader({ request }) {
@@ -14,9 +17,17 @@ export async function loader({ request }) {
   if (!token) {
     return redirect("/Login");
   }
-  return redirect("/plants");
+  return "";
 }
-
 export default function Index() {
-  return <></>;
+  <main>
+    <h1 className="text-xl">Hello world</h1>
+    {/* <div className="flex flex-col ">
+        <Hero />
+        <div className="flex ">
+          <Sidebar />
+          <Plants />
+        </div>
+      </div> */}
+  </main>;
 }

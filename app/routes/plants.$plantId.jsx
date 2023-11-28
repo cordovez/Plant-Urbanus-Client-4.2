@@ -1,26 +1,16 @@
-import { redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import PlantDetailGrid from "../components/PlantsDetailGrid";
 import BasicButton from "../components/basicButton";
-import { getSession } from "../sessions";
 import convertDatetime from "../utils/convertDatetime";
-
-export const action = async ({ params, request }) => {
-  return redirect(`./edit`);
-};
+import getToken from "../utils/getToken";
 
 export const loader = async ({ params, request }) => {
-  const BASE = process.env.BASE_URL;
   invariant(params.plantId, "Missing plantId param");
+
+  const BASE = process.env.BASE_URL;
   const plantId = params.plantId;
-  const cookieHeader = await getSession(request.headers.get("Cookie"));
-
-  const token = cookieHeader.data.token;
-
-  if (!token) {
-    return redirect("/");
-  }
+  const token = await getToken({ request });
 
   const response = fetch(`${BASE}/api/plants/${plantId}`, {
     headers: {

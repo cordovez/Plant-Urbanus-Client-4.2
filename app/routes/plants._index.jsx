@@ -2,6 +2,9 @@ import { redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import PlantsOverviewGrid from "../components/PlantsOverviewGrid";
 import { getSession } from "../sessions";
+import styles from "../tailwind.css";
+
+export const links = () => [{ rel: "stylesheet", href: styles }];
 
 export async function loader({ request }) {
   const cookieHeader = await getSession(request.headers.get("Cookie"));
