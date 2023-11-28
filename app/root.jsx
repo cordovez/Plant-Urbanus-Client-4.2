@@ -9,9 +9,8 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import Sidebar from "./components/Sidebar";
-import Hero from "./components/hero";
 import styles from "./tailwind.css";
-
+// import Hero from "./components/hero";
 import { getSession } from "./sessions";
 
 export const meta = () => {
@@ -44,7 +43,7 @@ export default function App() {
       <body>
         {token ? (
           <div className="flex flex-col ">
-            <Hero />
+            {/* <Hero /> */}
             <div className="flex ">
               <Sidebar />
               <Outlet />

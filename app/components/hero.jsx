@@ -1,6 +1,6 @@
-const bgImage = "teemu-paananen-OOE4xAnBhKo-unsplash2.jpg";
-const logo = "PlantUrbanusLogo_white.svg";
 export default function Hero() {
+  const bgImage = "teemu-paananen-OOE4xAnBhKo-unsplash2.jpg";
+  const logo = "PlantUrbanusLogo_white.svg";
   return (
     <div id="left" className="relative ">
       <div className="flex h-40 sm:h-80">

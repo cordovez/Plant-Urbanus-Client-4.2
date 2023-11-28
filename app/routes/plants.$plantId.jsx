@@ -1,5 +1,5 @@
 import { redirect } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import PlantDetailGrid from "../components/PlantsDetailGrid";
 import BasicButton from "../components/basicButton";
@@ -81,10 +81,3 @@ export default function Plant() {
     </main>
   );
 }
-
-export const handle = {
-  // const data = useLoaderData()
-  breadcrumb: () => {
-    return <Link to={`/plant/detail`}>Child Route</Link>;
-  },
-};
