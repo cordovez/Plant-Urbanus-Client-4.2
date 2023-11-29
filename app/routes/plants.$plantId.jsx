@@ -1,3 +1,4 @@
+import { redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import PlantDetailGrid from "../components/PlantsDetailGrid";
@@ -5,13 +6,17 @@ import BasicButton from "../components/basicButton";
 import convertDatetime from "../utils/convertDatetime";
 import getToken from "../utils/getToken";
 
-export const loader = async ({ params, request }) => {
+export const loader = async ({ request, params }) => {
   invariant(params.plantId, "Missing plantId param");
 
   const BASE = process.env.BASE_URL;
   const plantId = params.plantId;
-  const token = await getToken({ request });
+  console.log("[[[[[[[[[[[ PARAMS ]]]]]]]]]]]]: ", params);
 
+  const token = await getToken({ request });
+  if (!token) {
+    return redirect("/Login");
+  }
   const response = fetch(`${BASE}/api/plants/${plantId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -27,14 +32,12 @@ export default function Plant() {
   const dateOfPurchase = convertDatetime(data.created_at);
 
   return (
-    <main className="">
+    <>
       <h1>Plant details</h1>
       <h2>{data.common_name ? data.common_name : ""}</h2>
-
       <div className="flex mx-auto  w-11/12 ">
         <PlantDetailGrid data={plantPhotos} />
       </div>
-
       <div>
         <p>
           <span className="font-bold">date of purchase:</span>{" "}
@@ -68,6 +71,6 @@ export default function Plant() {
       <Form method="post">
         <BasicButton label="Edit" />
       </Form>
-    </main>
+    </>
   );
 }
