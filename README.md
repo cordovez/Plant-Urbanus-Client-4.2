@@ -1,10 +1,32 @@
-# Welcome to Remix!
+# Welcome PlantUrbanus
 
-- [Remix Docs](https://remix.run/docs)
+A simple app to manage houseplants, for houseplant aficionados.
+
+To note about this app:
+
+- This web app was created with [Remix](https://remix.run/docs)
+- The back-end api was created with Python using [FastApi](https://fastapi.tiangolo.com/)
+- The database is a NoSQL [MongoDB](https://www.mongodb.com/)
+- The dynamic images are stored in [Cloudinary](https://cloudinary.com/), however ...
+  - file uploads are handled by the api
+  - images are retrieved transformed from Cloudinary
+  - each plant is able to hold a QR code
+
+## To dos
+
+As a reminder to myself to do:
+
+- make sure that plant names are unique
+- add update-photos to an existing plant
+- collapsible menu for mobile
+- delete plant button
+- Admin functions
+- perhaps give every plant a qr code by default.
+- display QR code
 
 ## Development
 
-From your terminal:
+<!-- From your terminal:
 
 ```sh
 npm run dev
@@ -35,4 +57,4 @@ If you're familiar with deploying node applications, the built-in Remix app serv
 Make sure to deploy the output of `remix build`
 
 - `build/`
-- `public/build/`
+- `public/build/` -->
