@@ -7,21 +7,23 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
-      <div>
+      <main>
         <h1>
           {error.status} {error.statusText}
         </h1>
         <p>{error.data}</p>
-      </div>
+      </main>
     );
   } else if (error instanceof Error) {
     return (
-      <div>
+      <main>
         <h1>Error</h1>
         <p>{error.message}</p>
         <p>The stack trace is:</p>
-        <pre>{error.stack}</pre>
-      </div>
+        <div>
+          <p>{error.stack}</p>
+        </div>
+      </main>
     );
   } else {
     return <h1>Unknown Error</h1>;

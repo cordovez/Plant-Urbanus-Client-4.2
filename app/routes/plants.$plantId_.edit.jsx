@@ -1,20 +1,20 @@
 import { redirect } from "@remix-run/node";
-import { Form, useLoaderData, useNavigate } from "@remix-run/react";
+import {
+  Form,
+  isRouteErrorResponse,
+  useLoaderData,
+  useNavigate,
+  useRouteError,
+} from "@remix-run/react";
 import invariant from "tiny-invariant";
 import BasicButton from "../components/basicButton";
-import { getSession } from "../sessions";
+import getToken from "../utils/getToken";
 
 export const loader = async ({ params, request }) => {
   const BASE = process.env.BASE_URL;
   invariant(params.plantId, "Missing plantId param");
   const plantId = params.plantId;
-  const cookieHeader = await getSession(request.headers.get("Cookie"));
-
-  const token = cookieHeader.data.token;
-
-  if (!token) {
-    return redirect("/");
-  }
+  const token = await getToken({ request });
 
   const response = fetch(`${BASE}/api/plants/${plantId}`, {
     headers: {
@@ -27,12 +27,12 @@ export const loader = async ({ params, request }) => {
 };
 
 export const action = async ({ params, request }) => {
-  const cookieHeader = await getSession(request.headers.get("Cookie"));
-  const token = cookieHeader.data.token;
+  const token = await getToken({ request });
   const plantId = params.plantId;
-
   let formData = await request.formData();
   const updates = Object.fromEntries(formData);
+  console.log("++++++++++ Updates ++++++++++++");
+  console.log(updates);
 
   const fetchConfig = {
     method: "POST",
@@ -43,13 +43,18 @@ export const action = async ({ params, request }) => {
     },
   };
 
+  console.log("++++++++++ Config ++++++++++++");
+  console.log(fetchConfig);
+
   const response = fetch(
     `${process.env.BASE_URL}/api/plants/update/${plantId}`,
     fetchConfig
   );
-  const data = (await response).json;
 
+  const data = (await response).json;
   if (data) {
+    console.log("++++++++++ Data ++++++++++++");
+    console.log(data.detail);
     return redirect(`/plants/${plantId}`);
   }
 };
@@ -58,8 +63,12 @@ export default function UserEdit() {
   const plant = useLoaderData();
   const navigate = useNavigate();
   return (
-    <main className="justify-center ">
-      <Form id="contact-form" method="post" className="max-w-sm mx-auto">
+    <Form
+      id="contact-form"
+      method="post"
+      className=" mx-auto mt-20 p-6  bg-green-50 sm:w-full"
+    >
+      <div className="flex   gap-2">
         <PlantField
           label="common_name"
           aria="common name"
@@ -78,7 +87,9 @@ export default function UserEdit() {
           type="text"
           name="scientific_name"
         />
+      </div>
 
+      <div className="flex flex-wrap gap-2">
         <PlantField
           label="pest_treatment"
           aria="Pest Treatment"
@@ -106,14 +117,16 @@ export default function UserEdit() {
           type="text"
           name="nutrients"
         />
+      </div>
+      <div className="flex gap-2">
         <PlantField
-          label="notes"
-          aria="Notes"
-          defaultValue={plant.notes}
-          id="notes"
-          placeholder={plant.notes}
-          type="text"
-          name="notes"
+          label="price_paid"
+          aria="Price paid"
+          defaultValue="0.0"
+          id="price_paid"
+          placeholder={plant.price_paid ? plant.price_paid : 0}
+          type="number"
+          name="price_paid"
         />
         <PlantField
           label="purchased_at"
@@ -124,22 +137,14 @@ export default function UserEdit() {
           type="text"
           name="purchased_at"
         />
-        <PlantField
-          label="price_paid"
-          aria="Price paid"
-          defaultValue={plant.price_paid}
-          id="price_paid"
-          placeholder={plant.price_paid ? plant.price_paid : 0}
-          type="number"
-          name="price_paid"
-        />
-        <p>
-          <BasicButton label="Save" />
+      </div>
+      <textarea name="notes" id="notes" cols="30" rows="10"></textarea>
+      <p>
+        <BasicButton label="Save" name="_action" />
 
-          <BasicButton label="Cancel" onClick={() => navigate(-1)} />
-        </p>
-      </Form>
-    </main>
+        <BasicButton label="Cancel" onClick={() => navigate(-1)} />
+      </p>
+    </Form>
   );
 }
 
@@ -169,4 +174,29 @@ export function PlantField({
       />
     </div>
   );
+}
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </div>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
 }

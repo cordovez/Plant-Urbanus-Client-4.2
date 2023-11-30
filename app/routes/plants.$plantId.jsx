@@ -1,6 +1,7 @@
 import { redirect } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import PlantDetails from "../components/PlantDetails";
 import PlantDetailGrid from "../components/PlantsDetailGrid";
 import BasicButton from "../components/basicButton";
 import convertDatetime from "../utils/convertDatetime";
@@ -28,30 +29,50 @@ export const action = async ({ request, params }) => {
   const BASE = process.env.BASE_URL;
   const plantId = params.plantId;
   const token = await getToken({ request });
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${token}`);
 
   const formData = await request.formData();
-  // I'm leaving 'values' in the destructuring as a reminder.
-  const { _action, ...values } = Object.fromEntries(formData);
+  const { _action } = Object.fromEntries(formData);
+
+  if (_action === "upload") {
+    const newPhotoName = "update photo";
+    formData.append("file", formData.get("file"), newPhotoName);
+    console.log("+++++++ form data +++++++++++++");
+    for (const entry of formData.entries()) {
+      console.log(entry);
+    }
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formData,
+      redirect: "follow",
+    };
+
+    const response = await fetch(
+      `${BASE}/api/plants/${plantId}/add-image/`,
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+    return redirect(`.`);
+  }
+
   if (_action === "delete") {
     const dbResponse = await fetch(`${BASE}/api/plants/delete/${plantId}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: myHeaders,
     });
-    return redirect("/plants");
+    if (dbResponse) {
+      return redirect("/plants");
+    }
   }
-  // if (_action === "edit") {
-  //   return redirect(`./edit`);
-  // } else if (_action === "delete") {
-  //   const dbResponse = await fetch(`${BASE}/api/plants/delete/${plantId}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
-  //   return dbResponse.detail;
-  // }
-  // return "";
+
+  if (_action === "edit") {
+    return redirect(`./edit`);
+  }
 };
 
 export default function Plant() {
@@ -62,56 +83,60 @@ export default function Plant() {
   const actionData = useActionData();
   return (
     <>
-      {actionResponse ? (
-        <h1>{actionResponse}</h1>
-      ) : (
-        <>
-          <h1>Plant details</h1>
-          <h2>{data.common_name ? data.common_name : ""}</h2>
-          <div className="flex mx-auto  w-11/12 ">
-            <PlantDetailGrid data={plantPhotos} />
-          </div>
-          <pre>{JSON.stringify(actionData)}</pre>
-          <div>
-            <p>
-              <span className="font-bold">date of purchase:</span>{" "}
-              {dateOfPurchase ? dateOfPurchase : ""}
-            </p>
-            <p>
-              <span className="font-bold">scientific name:</span>{" "}
-              {data.scientific_name ? data.scientific_name : ""}
-            </p>
-            <p>
-              <span className="font-bold">substrate:</span>{" "}
-              {data.substrate ? data.substrate : ""}
-            </p>
-            <p>
-              <span className="font-bold">pest treatment:</span>{" "}
-              {data.pest_treatment ? data.pest_treatment : ""}
-            </p>
-            <p>
-              <span className="font-bold">nutrients:</span>{" "}
-              {data.nutrients ? data.nutrients : ""}
-            </p>
-            <p>
-              <span className="font-bold">notes:</span>{" "}
-              {data.notes ? data.notes : ""}
-            </p>
-            <p>
-              <span className="font-bold">price:</span> €
-              {data.price_paid ? data.price_paid : ""}
-            </p>
-          </div>
+      <div className="flex flex-col justify-start  p-1 overflow-y-auto sm:gap-4 sm:flex-row sm:mt-5 ">
+        <PlantDetailGrid data={plantPhotos} />
+        <div className="flex flex-col  border-solid border  border-black p-2  rounded-md h-full sm:max-w-sm ">
+          {/* //////////////// Plant Details */}
+          <PlantDetails data={data} dateOfPurchase={dateOfPurchase} />
+          <Form method="post">
+            <BasicButton label="Edit" name="_action" value="edit" />
+          </Form>
           <div className="flex">
-            <Form method="delete">
-              <BasicButton label="Delete Plant" name="_action" value="delete" />
-            </Form>
-            <Form method="post">
-              <BasicButton label="Edit" name="_action" value="edit" />
+            <Form method="post" encType="multipart/form-data" reloadDocument>
+              {/* //////////////// Add image */}
+              <h2>Add update image</h2>
+              <div className="flex flex-col">
+                <label htmlFor="add" className="block">
+                  <input
+                    type="file"
+                    id="add"
+                    name="file"
+                    accept="image/*"
+                    className=" block  text-sm text-slate-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-violet-50 file:text-violet-700
+                        hover:file:bg-violet-100 file:border-none"
+                  />
+                </label>
+                <BasicButton
+                  label="Upload"
+                  name="_action"
+                  value="upload"
+                  type="submit"
+                />
+              </div>
             </Form>
           </div>
-        </>
-      )}
+          <div className="flex flex-col mt-4 ">
+            <hr />
+            <p>
+              Warning: hitting the delete button will erase all photos and
+              information regarding this plant. This is irreversible.
+            </p>
+            <Form method="delete">
+              {/* uderscore in "_action" is important otherwise a different name also works */}
+              <BasicButton
+                label="Delete Plant"
+                name="_action"
+                value="delete"
+                alert={true}
+              />
+            </Form>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

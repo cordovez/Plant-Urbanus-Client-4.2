@@ -10,22 +10,7 @@ import {
 import Sidebar from "./components/Sidebar";
 import Hero from "./components/hero";
 import styles from "./tailwind.css";
-export const links = () => [
-  { rel: "stylesheet", href: styles },
-  // { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
-  // {
-  //   rel: "icon",
-  //   type: "image/png",
-  //   sizes: "32x32",
-  //   href: "/favicon-32x32.png",
-  // },
-  // {
-  //   rel: "icon",
-  //   type: "image/png",
-  //   sizes: "16x16",
-  //   href: "/favicon-16x16.png",
-  // },
-];
+export const links = () => [{ rel: "stylesheet", href: styles }];
 
 export const meta = () => {
   return [{ title: "PlantUrbanus" }];
@@ -49,7 +34,11 @@ export default function App() {
           </main>
         </div>
 
-        <ScrollRestoration />
+        <ScrollRestoration
+          getKey={(location) => {
+            return location.pathname;
+          }}
+        />
         <Scripts />
         <LiveReload />
       </body>

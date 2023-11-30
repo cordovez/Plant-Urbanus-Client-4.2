@@ -16,7 +16,7 @@ export default function PlantGrid({ data }) {
         const coverImage = cld.image(plant.images[0].public_id);
         coverImage.resize(fill().width(200).height(200));
         return (
-          <NavLink to={`./${plant._id}`} key={plant._id}>
+          <NavLink to={`./${plant._id}`} key={plant._id} preventScrollReset>
             <li className="w-40 h-40 my-6">
               {plant.common_name}{" "}
               <div
@@ -37,7 +37,9 @@ export default function PlantGrid({ data }) {
       })}
       <NavLink to="./new">
         <li className="flex flex-col justify-center items-center my-6">
-          <p className="text-white">Add a plant</p>
+          <div className="invisible">
+            <p>Add a plant</p>
+          </div>
           <div className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5  text-center me-2  cursor-pointer w-40 h-40 flex justify-center items-center">
             <h1>Add a Plant</h1>
           </div>

@@ -17,7 +17,8 @@ To note about this app:
 As a reminder to myself to do:
 
 - make sure that plant names are unique
-- add update-photos to an existing plant
+- ~~add update-photos to an existing plant~~
+- add delete to update pictures
 - collapsible menu for mobile
 - ~~delete plant button~~
 - improve delete UX
@@ -25,6 +26,7 @@ As a reminder to myself to do:
 - perhaps give every plant a qr code by default.
 - display QR code
 - mark plants as "dead"
+- give update photos a date
 
 ## Development
 

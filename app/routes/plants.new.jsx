@@ -7,18 +7,17 @@ export const action = async ({ request }) => {
   const BASEURL = process.env.BASE_URL;
   const token = await getToken({ request });
   const myHeaders = new Headers();
-  myHeaders.append("Authorization", `Bearer ${token}`);
-
   let formData = await request.formData();
-  const newPlantName = formData.get("new-plant-name");
-  formData.append("file", formData.get("file"), newPlantName);
 
+  myHeaders.append("Authorization", `Bearer ${token}`);
   const requestOptions = {
     method: "POST",
     headers: myHeaders,
     body: formData,
     redirect: "follow",
   };
+  const newPlantName = formData.get("new-plant-name");
+  formData.append("file", formData.get("file"), newPlantName);
 
   const response = await fetch(
     `${BASEURL}/api/users/me/add-plant?plant_name=${newPlantName}`,

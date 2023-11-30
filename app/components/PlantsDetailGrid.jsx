@@ -10,21 +10,16 @@ export default function PlantDetailGrid({ data }) {
   });
 
   return (
-    <ul className="flex flex-wrap justify-start mb-20">
+    <ul className="flex flex-wrap justify-start mb-4">
       {data.map((image) => {
         const supportImage = cld.image(image.public_id);
-        supportImage.resize(fill().width(200).height(200));
+        supportImage.resize(fill().width(250).height(250));
         return (
-          <li key={image.public_id} className="mx-2 my-2 ">
+          <li key={image.public_id} className="mx-1 my-1 w-36 sm:w-52 ">
             <AdvancedImage cldImg={supportImage} />
           </li>
         );
       })}
-      <li className="flex flex-col justify-center items-center my-2 mx-2">
-        <div className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5  text-center me-2  cursor-pointer w-48 h-48 flex justify-center items-center">
-          <h1>Add photo</h1>
-        </div>{" "}
-      </li>
     </ul>
   );
 }
