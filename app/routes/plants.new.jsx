@@ -1,5 +1,5 @@
 import { redirect } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { Form, isRouteErrorResponse, useRouteError } from "@remix-run/react";
 import BasicButton from "../components/basicButton";
 import getToken from "../utils/getToken";
 
@@ -27,8 +27,9 @@ export const action = async ({ request }) => {
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
-
-  return redirect("/plants");
+  if (response) {
+    return redirect("/plants");
+  }
 };
 
 export default function NewPlant() {
@@ -55,4 +56,29 @@ export default function NewPlant() {
       </Form>
     </main>
   );
+}
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </div>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
 }

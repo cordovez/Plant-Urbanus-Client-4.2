@@ -1,6 +1,12 @@
-export default function BasicButton({ label, onClick }) {
+export default function BasicButton({ label, onClick, name, value }) {
   return (
-    <button className={button_style} onClick={onClick}>
+    <button
+      type="submit"
+      className={button_style}
+      onClick={onClick}
+      name={name}
+      value={value}
+    >
       {label}
     </button>
   );

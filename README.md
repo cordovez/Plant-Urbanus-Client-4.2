@@ -19,10 +19,12 @@ As a reminder to myself to do:
 - make sure that plant names are unique
 - add update-photos to an existing plant
 - collapsible menu for mobile
-- delete plant button
+- ~~delete plant button~~
+- improve delete UX
 - Admin functions
 - perhaps give every plant a qr code by default.
 - display QR code
+- mark plants as "dead"
 
 ## Development
 

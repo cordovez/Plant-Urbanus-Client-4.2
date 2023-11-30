@@ -20,14 +20,5 @@ export async function loader({ request }) {
   return "";
 }
 export default function Index() {
-  <main>
-    <h1 className="text-xl">Hello world</h1>
-    {/* <div className="flex flex-col ">
-        <Hero />
-        <div className="flex ">
-          <Sidebar />
-          <Plants />
-        </div>
-      </div> */}
-  </main>;
+  return <h1 className="text-xl">Hello world</h1>;
 }
