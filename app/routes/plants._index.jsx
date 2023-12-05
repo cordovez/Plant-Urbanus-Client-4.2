@@ -23,5 +23,6 @@ export async function loader({ request }) {
 }
 export default function PlantPhotos() {
   const plantData = useLoaderData();
+
   return <PlantsOverviewGrid data={plantData} />;
 }

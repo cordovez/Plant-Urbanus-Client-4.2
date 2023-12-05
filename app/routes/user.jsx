@@ -37,23 +37,23 @@ export const loader = async ({ request }) => {
 export default function User() {
   const userData = useLoaderData();
   const memberDate = convertDatetime(userData.created_at);
-
   const cld = new Cloudinary({
     cloud: {
       cloudName: "cordovez",
     },
   });
-
-  const avatar = cld.image(userData.avatar.public_id);
-  avatar
-    .resize(thumbnail().width(100).height(100).gravity(focusOn(face())))
-    .roundCorners(max())
-    .delivery(dpr("2.0"));
-
+  let avatar;
+  if (!userData.avatar.public_id === null) {
+    avatar = cld.image(userData.avatar.public_id);
+    avatar
+      .resize(thumbnail().width(100).height(100).gravity(focusOn(face())))
+      .roundCorners(max())
+      .delivery(dpr("2.0"));
+  }
   return (
     <>
       <div className="mt-10 w-40 flex flex-wrap justify-center">
-        <AdvancedImage cldImg={avatar} />
+        {avatar ? <AdvancedImage cldImg={avatar} /> : <GenericAvatar />}
         <h1 className="font-bold">{userData.username}</h1>
       </div>
       <div className="flex flex-col items-start ml-10 my-10">
@@ -102,4 +102,13 @@ export function ErrorBoundary() {
   } else {
     return <h1>Unknown Error</h1>;
   }
+}
+export function GenericAvatar() {
+  const userData = useLoaderData();
+  const url = userData.avatar.url;
+  return (
+    <div>
+      <img src={url} alt="generic avatar" />
+    </div>
+  );
 }

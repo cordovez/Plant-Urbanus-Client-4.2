@@ -1,5 +1,5 @@
 import { useState } from "react";
-export default function LoginForm() {
+export default function RegisterForm() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   // const data = useLoaderData();
   const handleInputChange = (name, value) => {
@@ -8,18 +8,29 @@ export default function LoginForm() {
   return (
     <div className=" justify-center items-center flex flex-col gap-y-5  ">
       <form method="POST" className=" p-10 max-w-sm sm:max-w-lg">
-        <h2 className="text-xl font-extrabold text-white mb-5">Login</h2>
+        <h2 className="text-xl font-extrabold text-white mb-5">Register</h2>
         <p className="text-white mb-10">
-          For a peek, use "monstera" and "Variegata" as user name and password
-          respectively
+          Although this is intended as a personal portfolio app, be aware that
+          your registration details will be saved on database.
         </p>
+        <p className="text-white mb-10">
+          You will be redirected to log in after you register.
+        </p>
+        <label htmlFor="email" className="text-slate-300 ">
+          email
+          <input
+            type="text"
+            name="email"
+            className="w-full p-2 rounded-xl my-2 border border-gray-300 text-slate-700"
+            onChange={(e) => handleInputChange("email", e.target.value)}
+          />
+        </label>
         <label htmlFor="username" className="text-slate-300 ">
           User name
           <input
             type="text"
             name="username"
             className="w-full p-2 rounded-xl my-2 border border-gray-300 text-slate-700"
-            defaultValue="monstera"
             onChange={(e) => handleInputChange("username", e.target.value)}
           />
         </label>
@@ -35,10 +46,10 @@ export default function LoginForm() {
         <button
           type="submit"
           name="_action"
-          value="log in"
+          value="Register"
           className="w-full rounded-xl mt-2 bg-green-900 px-3 py-2 text-white font-semibold transition duration-300 ease-in-out hover:bg-green-600"
         >
-          Submit
+          Register
         </button>
       </form>
     </div>

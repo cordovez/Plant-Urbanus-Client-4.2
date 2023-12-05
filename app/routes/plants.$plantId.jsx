@@ -106,8 +106,8 @@ export default function Plant() {
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-full file:border-0
                         file:text-sm file:font-semibold
-                        file:bg-violet-50 file:text-violet-700
-                        hover:file:bg-violet-100 file:border-none"
+                        file:bg-green-50 file:text-green-700
+                        hover:file:bg-green-100 bg-white border-none "
                   />
                 </label>
                 <BasicButton

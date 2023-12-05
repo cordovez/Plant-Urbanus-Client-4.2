@@ -26,24 +26,36 @@ export const action = async ({ request }) => {
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
-  if (response) {
-    return redirect("/plants");
-  }
+  return redirect("/plants");
 };
 
 export default function NewPlant() {
   return (
     <main>
-      <h1>Add a New Plant</h1>
+      <h1 className="mt-10">Add a New Plant</h1>
       <Form method="post" encType="multipart/form-data">
         <div className="flex flex-col mt-20">
-          <label htmlFor="img">Choose a File:</label>
+          {/* <label htmlFor="img">Choose a File:</label> */}
           {/* ATTENTION: name in the file input *must* be 'file' */}
-          <input type="file" id="img" name="file" accept="image/*" />
+          {/* <input type="file" id="img" name="file" accept="image/*" /> */}
+          <label htmlFor="add" className="block">
+            <input
+              type="file"
+              id="add"
+              name="file"
+              accept="image/*"
+              className=" block  text-sm text-slate-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-green-50 file:text-green-700
+                        hover:file:bg-green-100 bg-white border-none "
+            />
+          </label>
         </div>
 
         <div className="flex flex-col mt-20">
-          <label htmlFor="new-plant-name">New Plant Name</label>
+          <label htmlFor="new-plant-name">Give it a name ...</label>
           <input
             type="text"
             placeholder="Name"

@@ -27,6 +27,7 @@ As a reminder to myself to do:
 - display QR code
 - mark plants as "dead"
 - give update photos a date
+- "loading"
 
 ## Development
 

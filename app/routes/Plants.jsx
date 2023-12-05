@@ -1,5 +1,20 @@
 import { Outlet, isRouteErrorResponse, useRouteError } from "@remix-run/react";
+
+// import { redirect } from "@remix-run/node";
+
+// import getToken from "../utils/getToken";
+
+// export const loader = async ({ request }) => {
+//   const token = getToken({ request });
+//   console.log(token);
+//   if (!token) {
+//     return redirect("/Login");
+//   }
+//   return "";
+// };
 export default function Plants() {
+  // const user = useLoaderData();
+
   return <Outlet />;
 }
 export function ErrorBoundary() {
@@ -17,7 +32,7 @@ export function ErrorBoundary() {
   } else if (error instanceof Error) {
     return (
       <main>
-        <h1>Error</h1>
+        <h1>Plant Grid Error</h1>
         <p>{error.message}</p>
         <p>The stack trace is:</p>
         <div>
