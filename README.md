@@ -2,6 +2,10 @@
 
 A simple app to manage houseplants, for houseplant aficionados.
 
+This is intended as an exploration for using Remix on the front, while accessing a FastAPI Python back-end.
+
+The UI is very simple and not intended to be final. Rather it should be considered a launching platform for more complex functionality and design.
+
 To note about this app:
 
 - This web app was created with [Remix](https://remix.run/docs)
@@ -29,7 +33,7 @@ As a reminder to myself to do:
 - give update photos a date
 - "loading"
 
-## Development
+<!-- ## Development -->
 
 <!-- From your terminal:
 
