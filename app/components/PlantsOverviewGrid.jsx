@@ -1,8 +1,9 @@
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { fill } from "@cloudinary/url-gen/actions/resize";
-// import { redirect } from "@remix-run/node";
+
 import { NavLink } from "@remix-run/react";
+// import { redirect } from "@remix-run/node";
 // import getToken from "../utils/getToken";
 
 // export const load = async ({ request }) => {

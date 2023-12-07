@@ -19,6 +19,8 @@ export async function loader({ request }) {
   });
 
   const data = (await response).json();
+
+  console.log("loader data", token);
   return data;
 }
 export default function PlantPhotos() {

@@ -37,23 +37,11 @@ export const loader = async ({ request }) => {
 export default function User() {
   const userData = useLoaderData();
   const memberDate = convertDatetime(userData.created_at);
-  const cld = new Cloudinary({
-    cloud: {
-      cloudName: "cordovez",
-    },
-  });
-  let avatar;
-  if (!userData.avatar.public_id === null) {
-    avatar = cld.image(userData.avatar.public_id);
-    avatar
-      .resize(thumbnail().width(100).height(100).gravity(focusOn(face())))
-      .roundCorners(max())
-      .delivery(dpr("2.0"));
-  }
+
   return (
     <>
       <div className="mt-10 w-40 flex flex-wrap justify-center">
-        {avatar ? <AdvancedImage cldImg={avatar} /> : <GenericAvatar />}
+        <AvatarSelector /> {/* see below */}
         <h1 className="font-bold">{userData.username}</h1>
       </div>
       <div className="flex flex-col items-start ml-10 my-10">
@@ -83,32 +71,47 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
-      <div>
+      <main>
         <h1>
           {error.status} {error.statusText}
         </h1>
         <p>{error.data}</p>
-      </div>
+      </main>
     );
   } else if (error instanceof Error) {
     return (
-      <div>
+      <main>
         <h1>Error</h1>
         <p>{error.message}</p>
         <p>The stack trace is:</p>
         <pre>{error.stack}</pre>
-      </div>
+      </main>
     );
   } else {
     return <h1>Unknown Error</h1>;
   }
 }
-export function GenericAvatar() {
+
+export function AvatarSelector() {
   const userData = useLoaderData();
-  const url = userData.avatar.url;
-  return (
-    <div>
-      <img src={url} alt="generic avatar" />
-    </div>
-  );
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: "cordovez",
+    },
+  });
+  const genericAvatar = userData.avatar.url;
+  const userSubmittedImage = userData.avatar.public_id;
+  const avatar = cld.image(userSubmittedImage);
+  avatar
+    .resize(thumbnail().width(100).height(100).gravity(focusOn(face())))
+    .roundCorners(max())
+    .delivery(dpr("2.0"));
+  if (userSubmittedImage === null) {
+    return (
+      <>
+        <img src={genericAvatar} alt="generic avatar" />
+      </>
+    );
+  }
+  return <AdvancedImage cldImg={avatar} />;
 }

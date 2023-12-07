@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@cloudinary/react": "^1.11.2",
-    "@cloudinary/url-gen": "^1.13.0",
+    "@cloudinary/url-gen": "^1.14.0",
     "@heroicons/react": "^2.0.18",
     "@remix-run/css-bundle": "^2.3.0",
     "@remix-run/node": "^2.3.0",
