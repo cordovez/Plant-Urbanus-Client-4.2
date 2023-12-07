@@ -3,23 +3,8 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { fill } from "@cloudinary/url-gen/actions/resize";
 
 import { NavLink } from "@remix-run/react";
-// import { redirect } from "@remix-run/node";
-// import getToken from "../utils/getToken";
-
-// export const load = async ({ request }) => {
-//   const token = await getToken({ request });
-
-//   if (!token) {
-//     return redirect("/login");
-//   }
-//   return null;
-// };
 
 export default function PlantGrid({ data }) {
-  // const userIsLoggedIn = useLoaderData();
-  // if (!userIsLoggedIn) {
-  //   return "no data";
-  // }
   const cld = new Cloudinary({
     cloud: {
       cloudName: "cordovez",
