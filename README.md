@@ -1,5 +1,7 @@
 # Welcome PlantUrbanus
 
+The site is now live at [https://plant-urbanus-client-4-2.vercel.app/](https://plant-urbanus-client-4-2.vercel.app/)
+
 A simple app to manage houseplants, for houseplant aficionados.
 
 This is intended as an exploration for using Remix on the front, while accessing a FastAPI Python back-end.
