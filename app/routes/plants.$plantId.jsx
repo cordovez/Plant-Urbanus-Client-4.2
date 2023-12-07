@@ -38,10 +38,6 @@ export const action = async ({ request, params }) => {
   if (_action === "upload") {
     const newPhotoName = "update photo";
     formData.append("file", formData.get("file"), newPhotoName);
-    console.log("+++++++ form data +++++++++++++");
-    for (const entry of formData.entries()) {
-      console.log(entry);
-    }
 
     const requestOptions = {
       method: "POST",
@@ -53,10 +49,23 @@ export const action = async ({ request, params }) => {
     const response = await fetch(
       `${BASE}/api/plants/${plantId}/add-image/`,
       requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+    );
+    // .then((response) => response.text())
+    // .then((result) => console.log(result))
+    // .catch((error) => console.log("error", error));
+    if (!response.ok) {
+      if (response.status === 413) {
+        console.log(
+          "File size exceeds the limit. Please choose a smaller file."
+        );
+      } else {
+        console.log("An error occurred:", response.statusText);
+        console.log("Error Status:", response.status);
+      }
+    } else {
+      const result = await response.text();
+      console.log(result);
+    }
     return redirect(`.`);
   }
 

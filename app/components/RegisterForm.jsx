@@ -3,7 +3,8 @@ export default function RegisterForm() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   // const data = useLoaderData();
   const handleInputChange = (name, value) => {
-    setFormData({ ...formData, [name]: value });
+    const lowercasedValue = name === "username" ? value.toLowerCase() : value;
+    setFormData({ ...formData, [name]: lowercasedValue });
   };
   return (
     <div className=" justify-center items-center flex flex-col gap-y-5  ">
@@ -30,6 +31,7 @@ export default function RegisterForm() {
           <input
             type="text"
             name="username"
+            value={formData.username}
             className="w-full p-2 rounded-xl my-2 border border-gray-300 text-slate-700"
             onChange={(e) => handleInputChange("username", e.target.value)}
           />

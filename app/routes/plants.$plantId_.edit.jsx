@@ -25,9 +25,6 @@ export const action = async ({ params, request }) => {
   const plantId = params.plantId;
   let formData = await request.formData();
   const updates = Object.fromEntries(formData);
-  console.log("++++++++++ Updates ++++++++++++");
-  console.log(updates);
-
   const fetchConfig = {
     method: "POST",
     body: JSON.stringify(updates),
@@ -37,9 +34,6 @@ export const action = async ({ params, request }) => {
     },
   };
 
-  console.log("++++++++++ Config ++++++++++++");
-  console.log(fetchConfig);
-
   const response = fetch(
     `${process.env.BASE_URL}/api/plants/update/${plantId}`,
     fetchConfig
@@ -47,8 +41,6 @@ export const action = async ({ params, request }) => {
 
   const data = (await response).json;
   if (data) {
-    console.log("++++++++++ Data ++++++++++++");
-    console.log(data.detail);
     return redirect(`/plants/${plantId}`);
   }
 };

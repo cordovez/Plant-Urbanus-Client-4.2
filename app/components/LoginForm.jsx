@@ -3,7 +3,8 @@ export default function LoginForm() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   // const data = useLoaderData();
   const handleInputChange = (name, value) => {
-    setFormData({ ...formData, [name]: value });
+    const lowercasedValue = name === "username" ? value.toLowerCase() : value;
+    setFormData({ ...formData, [name]: lowercasedValue });
   };
   return (
     <div className=" justify-center items-center flex flex-col gap-y-5  ">
@@ -19,8 +20,10 @@ export default function LoginForm() {
             type="text"
             name="username"
             className="w-full p-2 rounded-xl my-2 border border-gray-300 text-slate-700"
-            defaultValue="monstera"
-            onChange={(e) => handleInputChange("username", e.target.value)}
+            value={formData.username}
+            onChange={(e) =>
+              handleInputChange("username", e.target.value.toLowerCase())
+            }
           />
         </label>
         <label htmlFor="password" className="text-slate-300 ">
