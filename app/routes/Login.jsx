@@ -72,7 +72,7 @@ export default function Login() {
     console.log("this login: ", login);
   };
   return (
-    <div className="bg-slate-800 flex flex-col w-full sm:flex-row ">
+    <div className="bg-slate-800 flex flex-col w-full  sm:flex-row sm:h-screen">
       <div>
         <LoginBackground />
       </div>

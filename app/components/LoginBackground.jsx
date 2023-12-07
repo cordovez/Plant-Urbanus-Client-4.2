@@ -11,7 +11,7 @@ export default function LoginBackground() {
       <img
         src={bgImage}
         alt="ferns"
-        className=" h-64  w-full  sm:h-full sm:w-full object-none "
+        className=" h-64  w-full  sm:h-screen sm:w-full object-none "
       />
       <div className="absolute bottom-0 left-0 sm:top-0 ">
         <img src={logo} alt="PlantUrbanus" className="w-3/4" />
